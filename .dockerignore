@@ -1,0 +1,14 @@
+.git
+.gitignore
+.vscode
+.idea
+node_modules
+*.log
+*.md
+Dockerfile
+docker-compose.yml
+.dockerignore
+admin/uploads/*
+!admin/uploads/.gitkeep
+
+

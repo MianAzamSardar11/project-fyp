@@ -1,0 +1,46 @@
+services:
+  # PHP Apache Service
+  web:
+    build: .
+    container_name: sociavo-web
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./admin/uploads:/var/www/html/admin/uploads
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=portfolio
+    networks:
+      - sociavo-network
+
+  # MySQL Database Service
+  db:
+    image: mysql:8.0
+    container_name: sociavo-db
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=portfolio
+      - MYSQL_USER=sociavo
+      - MYSQL_PASSWORD=sociavo123
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./admin/db/portfolio.sql:/docker-entrypoint-initdb.d/portfolio.sql
+    networks:
+      - sociavo-network
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  db_data:
+
+networks:
+  sociavo-network:
+    driver: bridge
+
+
